@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import PhotoImage
-import Brick
+from Stage1 import Brick
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import cv2
