@@ -4,10 +4,10 @@ from Stage1 import Brick
 from Stage2 import Building
 
 DEBUG = True
-IMG_long = 480
+IMG_HEIGHT = 480
 IMG_WIDTH = 640
 # BUILD_SIZE = 800
-long_side = [36, 47, 65]
+long_side = [37, 47, 65]
 longs = {2, 3, 4, 6}
 colors = {"Yellow", "Black", "Red", "Blue", "White", "Orange", "Green"}
 stock = {}

@@ -34,54 +34,52 @@ def perform_projective_transformation(image):
 
     return transformed_image
 
-def find_and_add_bricks(image):
-    image = perform_projective_transformation(image)
+def find_and_add_bricks(image, masked_image, color):
+    masked_image = perform_projective_transformation(masked_image)
     # Convert image to HSV color space
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    for mask in Masks:
-        print(mask)
-        # Define lower and upper bounds for the color mask
-        lower_bound = np.array(Masks[mask][0])
-        upper_bound = np.array(Masks[mask][1])
-        mask_result = cv2.inRange(hsv, lower_bound, upper_bound)
+    hsv = cv2.cvtColor(masked_image, cv2.COLOR_BGR2HSV)
+    # Define lower and upper bounds for the color mask
+    lower_bound = np.array(Masks[color][0])
+    upper_bound = np.array(Masks[color][1])
+    mask_result = cv2.inRange(hsv, lower_bound, upper_bound)
 
-        # Additional condition for Red mask
-        if mask == "Red":
-            lower_bound2 = Masks[mask + "2"][0]
-            upper_bound2 = Masks[mask + "2"][1]
-            mask2 = cv2.inRange(hsv, lower_bound2, upper_bound2)
-            mask_result = cv2.bitwise_or(mask_result, mask2)
+    # Additional condition for Red mask
+    if color == "Red":
+        lower_bound2 = Masks[color + "2"][0]
+        upper_bound2 = Masks[color + "2"][1]
+        mask2 = cv2.inRange(hsv, lower_bound2, upper_bound2)
+        mask_result = cv2.bitwise_or(mask_result, mask2)
 
-        # Find contours in the masked image
-        contours, _ = cv2.findContours(mask_result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)
-        for contour in contours:
-            # Get the minimum area rectangle bounding the contour
-            rect = cv2.minAreaRect(contour)
-            box = cv2.boxPoints(rect)
-            box = np.intp(box)
-            if cv2.contourArea(contour) > 450:
-                long = np.linalg.norm(box[0] - box[1])
-                long2 = np.linalg.norm(box[3] - box[2])
-                short = np.linalg.norm(box[1] - box[2])
-                short2 = np.linalg.norm(box[0] - box[3])
-                long = (long + long2) / 2
-                short = (short + short2) / 2
-                if short > long:
-                    short, long = long, short
-                if short > long_side[0]:                #we got few bricks together
-                    # Draw the rotated bounding box
-                    cv2.drawContours(image, [box], 0, (0, 0, 255), 2)
-                else:
-                    # Draw the rotated bounding box
-                    cv2.drawContours(image, [box], 0, (255, 255, 255), 2)
-                    add_brick(mask, long)
-                if DEBUG:
-                    # Add text next to the rectangle
-                    area = cv2.contourArea(contour)
-                    text = f"{area}"
-                    cv2.putText(image, text, (box[1][0], box[1][1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-                    print(f"long: {long:.2f} short: {short:.2f} area: {area:.2f} \n")
+    # Find contours in the masked image
+    contours, _ = cv2.findContours(mask_result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours = sorted(contours, key=cv2.contourArea, reverse=True)
+    for contour in contours:
+        # Get the minimum area rectangle bounding the contour
+        rect = cv2.minAreaRect(contour)
+        box = cv2.boxPoints(rect)
+        box = np.intp(box)
+        if cv2.contourArea(contour) > 450:
+            long = np.linalg.norm(box[0] - box[1])
+            long2 = np.linalg.norm(box[3] - box[2])
+            short = np.linalg.norm(box[1] - box[2])
+            short2 = np.linalg.norm(box[0] - box[3])
+            long = (long + long2) / 2
+            short = (short + short2) / 2
+            if short > long:
+                short, long = long, short
+            if short > long_side[0]:                #we got few bricks together
+                # Draw the rotated bounding box
+                cv2.drawContours(image, [box], 0, (0, 0, 255), 2)
+            else:
+                # Draw the rotated bounding box
+                cv2.drawContours(image, [box], 0, (255, 255, 255), 2)
+                add_brick(color, long)
+            if DEBUG:
+                # Add text next to the rectangle
+                area = cv2.contourArea(contour)
+                text = f"{area}"
+                cv2.putText(image, text, (box[1][0], box[1][1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+                print(f"long: {long:.2f} short: {short:.2f} area: {area:.2f} \n")
     return image
 
 
@@ -97,5 +95,5 @@ def t():
     for (color, long) in stock:
         print(stock[(color, long)].describe())
 
-if __name__ == "__main__":
+if __name__ == "_main_":
     t()
