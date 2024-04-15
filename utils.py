@@ -9,7 +9,7 @@ IMG_WIDTH = 640
 # BUILD_SIZE = 800
 long_side = [36, 47, 65]
 longs = {2, 3, 4, 6}
-colors = {"Green", "Blue", "Yellow", "Black", "Red", "Orange", "White"}
+colors = {"Yellow", "Black", "Red", "Blue", "White", "Orange", "Green"}
 stock = {}
 for color in colors:
     for long in longs:
@@ -45,8 +45,21 @@ Masks = {}
 Masks["Green"] = ((45, 60, 60), (100, 255, 255))
 Masks["Blue"] = ((100, 90, 90), (150, 255, 255))
 Masks["Yellow"] = ((15, 75, 75), (60, 255, 255))
-Masks["Black"] = ((55, 60, 0), (170, 110, 208))  # better than thoms's
+Masks["Black"] = ((55, 60, 0), (170, 110, 208))
 Masks["Red"] = ((0, 40, 0), (4, 255, 255))
 Masks["Red2"] = ((150, 40, 0), (180, 255, 255))
 Masks["Orange"] = ((5, 5, 200), (20, 255, 255))
-Masks["White"] = ((0, 0, 240), (255, 60, 255))
+Masks["White"] = ((60, 0, 240), (255, 60, 255))
+
+
+
+pkl_dict = {}
+pkl_dict["Green"] = "Trained_Green.pkl"
+pkl_dict["Blue"] = "Trained_Blue.pkl"
+pkl_dict["Yellow"] = "Trained_Yellow.pkl"
+pkl_dict["Black"] = "Trained_Black.pkl"
+pkl_dict["Red"] = "Trained_Red.pkl"
+pkl_dict["Orange"] = "Trained_Orange.pkl"
+pkl_dict["White"] = "Trained_White.pkl"
+pkl_dict["All1"] = "Trained_All.pkl"
+pkl_dict["All2"] = "Trained_All2.pkl"

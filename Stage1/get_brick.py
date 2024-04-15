@@ -9,7 +9,6 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir)) # Get the par
 sys.path.append(parent_dir) # Add the parent directory to the Python path
 from utils import stock, long_side, DEBUG, Masks
 
-
 def add_brick(color, long):
     if long < long_side[0]:
         stock[(color, 2)].add_one()
