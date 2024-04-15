@@ -18,15 +18,3 @@ class LegoBrick:
         self.count += 1
 
 
-
-
-color_dict = {}
-color_dict["Green"] = (0, 255, 0)
-color_dict["Blue"] = (0, 0, 255)
-color_dict["Yellow"] = (255, 255, 0)
-color_dict["Black"] = (0, 0, 0)
-color_dict["Red"] = (255, 0, 0)
-color_dict["Orange"] = (255, 165, 0)
-
-# lower_red = np.array([0, 100, 100])
-# upper_red = np.array([10, 255, 255])
