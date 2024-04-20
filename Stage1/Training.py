@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import sys
 import os
+from sklearn.mixture import GaussianMixture
+import pickle
 
 current_dir = os.path.dirname(os.path.abspath(__file__)) # Get the current directory (directory of gui.py)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir)) # Get the parent directory (project directory)
@@ -17,6 +19,8 @@ Types["Black"] = (4, 6, 8, 12)
 Types["Red"] = (4, 8, 16)
 Types["Orange"] = (4, 6, 16)
 Types["White"] = (4, 6, 8, 12)
+
+global gmm
 
 
 def load_data():
@@ -56,3 +60,30 @@ def Preprocess_Image(image):
 
     # Concatenate all features
     return np.concatenate((flattened_hsv, flattened_lab, flattened_rgb, image_shape), axis=1)
+
+
+def load_model(n, Model = "Read"):
+    model_path = "../Trained_All.pkl"
+
+    # Check if the model file exists
+    if Model == "Read":
+        # If model file exists, load the trained GMM model
+        with open(model_path, 'rb') as f:
+            gmm = pickle.load(f)
+            print("Model Loaded")
+
+    elif Model == "Write":
+        # If model file doesn't exist, train a new GMM model
+        train_data = load_data()
+        # Fit Gaussian Mixture Model (GMM)
+        gmm = GaussianMixture(n_components=n, covariance_type='full')
+        gmm.fit(train_data)
+        # Save trained GMM model
+        with open(model_path, 'wb') as f:
+            pickle.dump(gmm, f)
+            print("Model Saved")
+
+    return gmm
+
+
+gmm = load_model(10)
